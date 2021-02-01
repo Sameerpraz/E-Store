@@ -9,8 +9,14 @@ from django.http import HttpResponse
 
 def index(request):
     total = []
-    products = Product.get_all_products()
+    products = None
     categories = Category.objects.all()
+    categoryID = request.GET.get('category')
+    if categoryID:
+        products = Product.get_all_products_by_categoryid(categoryID)
+    else:
+        products = Product.get_all_products()
+
 
     for category in categories:
         cat_id = category.id
