@@ -1,10 +1,12 @@
 from django.urls import path, include
 
-from . import views
+from .views.home import Index
+from .views.login import *
+from .views.register import *
 
 urlpatterns = [
-    path('',views.index,name='index'),
+    path('',Index.as_view(),name='index'),
     # path('category/<int:pk>/',views.CategoryView,name='category')
-    path('login', views.login, name='login'),
-    path('register', views.Register, name='register')
+    path('login', login, name='login'),
+    path('register', Register, name='register')
 ]
