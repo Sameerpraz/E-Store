@@ -18,15 +18,33 @@ from django.contrib.auth.hashers import check_password
 class Index(View):
     def post(self,request):
         product = request.POST.get('product')
+        remove = request.POST.get('remove')
         cart = request.session.get('cart')
         if cart:
-            pass
+            quantity = cart.get(product)
+            if quantity:
+                if remove:
+                    if quantity<=1:
+                        cart.pop(product)
+                    else:
+                        cart[product] = quantity - 1
+                else:
+                    cart[product] = quantity + 1
+            else:
+                cart[product] = 1
         else:
-            pass
+            cart={}
+            cart[product] = 1
+        request.session['cart']=cart
+        print('--------------------------------')
+        print(request.session['cart'])
         return redirect('index')
     def get(self,request):
         # print('------')
         # print(request.session.get('firstname'))
+        cart= request.session.get('cart')
+        if not cart:
+            request.session['cart']={}
         total = []
         products = None
         categories = Category.objects.all()

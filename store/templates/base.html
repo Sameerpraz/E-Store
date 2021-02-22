@@ -30,11 +30,23 @@
           <a class="dropdown-item" href="#">Action</a>
           <a class="dropdown-item" href="#">Another action</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
+          <a class="dropdown-item" href="#"></a>
         </div>
       </li>
         </ul>
+        
     <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+    {% if request.session.customer %}
+    <li class="nav-item ml-auto">
+          <a class="nav-link" href="/cart">Cart</a>
+      </li>
+      <li class="nav-item ml-auto">
+          <a class="nav-link" href="/order">Order</a>
+      </li>
+      <li class="nav-item ml-auto">
+          <a class="nav-link" href="/logout">Logout</a>
+      </li>
+      {% else %}
       <li class="nav-item ml-auto">
           <a class="nav-link" href="{% url 'register'%}">Register</a>
       </li>
@@ -42,6 +54,7 @@
         <a class="nav-link" href="{%url 'login'%}">Login</a>
       </li>
     </ul>
+    {% endif %}
 
   </div>
 </nav>

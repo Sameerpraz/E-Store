@@ -2,6 +2,7 @@
 
 {%block body%}
 
+{%load cart%}
 <div class="container-fluid mt-3">
 <div class="row">
 <div class="col-lg-2 mx-auto">
@@ -22,20 +23,40 @@
 
       <div class="row mx-auto" >
       {%for product in products%}
-      <div class="card mx-auto mb-3" style="width: 18rem; opacity: 0.9; margin-bottom: 20px;">
+      <div class="card mx-auto mb-3" id="{{product.id}}" style="width: 18rem; opacity: 0.9; margin-bottom: 20px;">
         {%if product.image%}
-        <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap" style="height:18rem">
+        <img class="card-img-top" src="{{product.image.url}}" alt="Card image cap"  style="height:18rem">
         {%endif%}
         <div class="card-body">
           <h5 class="card-title">{{product.name}}</h5>
           <p class="card-text">{{product.description}}</p>
-          <form method='POST' action="">
-             {%csrf_token%}
-             <input hidden type="text" name="product" value='{{product.id}}'>
-            <input type="submit" class="btn btn-light border btn-sm" value="Add to Cart">
-          </form>
+          <p class="card-text"><b>{{product.price}}</b></p>
+          
         
         </div>
+         <div class="card-footer p-0 no-gutters">
+         <form method='POST' action="/#{{product.id}}" class="btn-block">
+             {%csrf_token%}
+         {% if product|is_in_cart:request.session.cart %}
+        <div class="row no-gutters">
+             <input hidden type="text" name="product" value='{{product.id}}'>
+            <input type='submit' name="remove" value='-' class="col-2 btn btn-block btn-secondary">
+        <div class="text-center col"> {{product | quantity_in_cart:request.session.cart}} </div>
+        <input type='submit' value='+' class="col-2 btn btn-block btn-secondary">
+    </form>
+        </div>
+          {% else %}
+          <form method='POST' action="/#{{product.id}}" class="btn-block">
+             {%csrf_token%}
+             <input hidden type="text" name="product" value='{{product.id}}'>
+            <input type="submit" class="float-right btn btn-light border form-control" value="Add to Cart">
+          </form>
+
+          
+        {% endif %}
+          
+        </div>
+
       </div>
     {%endfor%}
 
@@ -44,5 +65,4 @@
 </div>
 </div>
 
-
-  {%endblock%}
+{%endblock%}

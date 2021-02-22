@@ -7,6 +7,8 @@ from .views.register import *
 urlpatterns = [
     path('',Index.as_view(),name='index'),
     # path('category/<int:pk>/',views.CategoryView,name='category')
+    path('register', Register, name='register'),
     path('login', login, name='login'),
-    path('register', Register, name='register')
+    path('logout', logout, name='logout'),
+    
 ]

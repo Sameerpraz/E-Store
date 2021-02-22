@@ -25,22 +25,39 @@ def login(request):
         # customer = Customer.get_customer_by_email(email)
         try:
             customer = Customer.objects.get(email=email)
+            value = {
+                'email' : email 
+                }
         except Customer.DoesNotExist:
             customer = None
+            value = {
+                'email' : email 
+                }
+
+        
 
         if customer:
             passwordmatch = check_password(password, customer.password)
+
             if passwordmatch:
-                request.session['customer_id'] = customer.id
-                request.session['firstname'] = customer.firstname
+                # we are passing object customer for login 
+                request.session['customer'] = customer.id
                 return redirect('index')
             else:
                 error_message = "Password doesn't match"
                 return render(request,'login.html',{
-                    'error' : error_message
+                    'error' : error_message,
+                    'values': value
                     })
         else:
             error_message = "User doesnot exit"
             return render(request,'login.html',{
-                'error' : error_message
+                'error' : error_message,
+                'values': value
             })
+
+
+
+def logout(request):
+    request.session.clear()
+    return redirect('index')
