@@ -8,6 +8,9 @@ class Customer(models.Model):
     phone = models.IntegerField(unique=True)
     password = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.firstname
+    
 
 
     def register(self):

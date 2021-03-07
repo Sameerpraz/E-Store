@@ -2,7 +2,8 @@
 
 
 {% block content %}
-{%load cart%} 
+{%load cart%}
+{%load custom_filter%}
 
 <div class="container">
 <div class="border rounded p-4 m-4">
@@ -28,22 +29,58 @@
             <td><img src="{{product.image.url}}" style="height:40px; width:40px" ></td>
 			<td>{{product.name}}</td>
 			<td>{{product.category}}</td>
-            <td>{{product.price}}</td>
+            <td>{{product.price|currency}}</td>
             <td>{{product|quantity_in_cart:request.session.cart}}</td>
     
-			<td>{{product|multiply:request.session.cart}}</td>
+			<td>{{product|multiply:request.session.cart|currency}}</td>
 		{% endfor %}
 			<tr class="text-center">
-			<td colspan="5">Total</td>
-            <td>{{products | total_sum:request.session.cart}}</td>
+			<td colspan="6">Total</td>
+            <td >{{products | total_sum:request.session.cart|currency}}</td>
 			</tr>
 		</tbody>
 </table>
 <hr>
 <div class="m-3 p-3">
-<a href="#" class="btn btn-outline-info border rounded col-lg-3 float-right">Checkout</a>
+<button type="button" class="btn btn-outline-info border rounded col-lg-3 float-right" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
 </div>
 </div>
 </div>
 
+
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Checkout Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="m-2 p-3">
+      <form action="/check-out" method="POST">
+      {% csrf_token %}
+        <div class="form-group">
+        <label for="address">Address</lable>
+        <input type="text" name="address" id="address" class="form-control" placeholder="" aria-describedby="helpId">
+        </div>
+        <div class="form-group">
+        <label for="address">Phone</lable>
+        <input type="text" name="phone" id="phone" class="form-control" placeholder="" aria-describedby="helpId">
+        </div>
+        <input type="submit" class="btn btn-outline-info border rounded float-right" value="Checkout">
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

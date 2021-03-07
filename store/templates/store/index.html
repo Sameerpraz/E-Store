@@ -3,6 +3,7 @@
 {%block body%}
 
 {%load cart%}
+{% load custom_filter %}
 <div class="container-fluid mt-3">
 <div class="row">
 <div class="col-lg-2 mx-auto">
@@ -30,7 +31,7 @@
         <div class="card-body">
           <h5 class="card-title">{{product.name}}</h5>
           <p class="card-text">{{product.description}}</p>
-          <p class="card-text"><b>{{product.price}}</b></p>
+          <p class="card-text"><b>{{product.price|currency}}</b></p>
           
         
         </div>
